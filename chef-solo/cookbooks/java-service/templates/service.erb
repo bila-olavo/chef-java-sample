@@ -1,0 +1,130 @@
+#!/bin/bash
+export SERVICE_HOME="<%= @services_final_dir %>"
+
+LOG_FILE="<%= @services_final_dir %>/logs/console.log"
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:$JAVA_HOME/bin
+SERVICE_NAME=java-service
+UPDATE="update.sh"
+STARTUP="$JAVA_HOME/bin/java <%= @java_opts %> -jar <%= @artefact %>"
+SHUTDOWN_WAIT=30
+
+
+start(){
+
+    echo -e "\nStarting $SERVICE_NAME service ..."
+
+    # if [ -e /sensedia-logs/api-manager-application/catalina.out ]; then
+    #     mv -f /sensedia-logs/api-manager-application/catalina.out /sensedia-logs/api-manager-application/old/
+    # fi
+
+    PID=`ps -ef | grep "<%= @artefact %>" | grep -v grep | awk -F" " '{ print $2 }'`
+
+    if [ $PID ]; then
+        echo "$SERVICE_NAME is running!"
+        echo "Stop it first!"
+    else
+        echo "Starting $SERVICE_NAME service:"
+        su - <%= @user %> -c "nohup $STARTUP" >> $LOG_FILE 2>&1 &
+
+    fi
+}
+
+stop() {
+
+    echo -e "\nStoping $SERVICE_NAME service..."
+    PID=`ps -ef | grep "<%= @artefact %>" | grep -v grep | awk -F" " '{ print $2 }'`
+
+    if [ -z "$PID" ]; then
+        echo "PID Not found!"
+     #   exit
+    fi
+
+    for proc in $PID; do
+	    kill -TERM $proc 2> /dev/null
+        if [ $? -eq 0 ]; then
+            count="0"
+            until [ "$(ps --pid $proc | grep -c $proc)" -eq "0" ] || \
+                [ "$count" -gt "$SHUTDOWN_WAIT" ]; do
+                echo "waiting process $proc die ($count/$SHUTDOWN_WAIT)"
+                sleep 1
+                let count="${count}+1"
+            done
+            if [ "$count" -gt "$SHUTDOWN_WAIT" ]; then
+                echo "killing process that did not die after $SHUTDOWN_WAIT seconds"
+                kill -KILL $proc
+            fi
+        fi
+    done
+}
+
+restart(){
+    stop
+    start
+}
+
+status() {
+    echo -e "\nProcess running $SERVICE_NAME service:"
+    PID=`ps -ef | grep "<%= @artefact %>" | grep -v grep | awk -F" " '{ print $2 }' | head -n1`
+
+    if [ -z "$PID" ]; then
+        echo "PID not found!"
+        exit 3
+    else
+        ps www $PID 2> /dev/null
+    fi
+}
+
+update() {
+    if [ `/usr/bin/whoami` != "root" ]; then
+        echo -e "\nNOK! You must be root to run update!!"
+        exit 2
+    fi
+
+    VERSION=$1
+    if [ -n "$VERSION" ]; then
+      echo -e "\nUpdating $SERVICE_NAME to version $VERSION..."
+    else
+      echo -e "\nUpdating $SERVICE_NAME..."
+    fi
+
+    cd $SERVICE_HOME
+    ./$UPDATE $VERSION
+}
+
+version() {
+    echo -e "\n$SERVICE_NAME version:"
+    VER=`cat <%= @services_final_dir %>/version.txt`
+
+    if [ -z "$VER" ]; then
+        echo "Version not found!"
+        exit 3
+    else
+        echo -e "$VER"
+    fi
+}
+
+case "$1" in
+start)
+    start
+    ;;
+stop)
+    stop
+    ;;
+status)
+    status
+    ;;
+update)
+    update $2
+    ;;
+restart)
+    restart
+    ;;
+version)
+    version
+    ;;
+*)
+    echo $"Usage: $0 {start|stop|status|restart|update [version]}"
+    exit 1
+esac
+
+exit 0
