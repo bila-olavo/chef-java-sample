@@ -42,6 +42,6 @@ template "/etc/init.d/java-service" do
   )
 end
 
-service "#{service}-service" do
+service "java-service" do
   action [ :enable, :restart ]
 end
