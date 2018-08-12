@@ -1,11 +1,16 @@
 #!/bin/bash
+#
+#
+# chkconfig: 345 91 10
+# description: Starts and stops java app.
+#
 export SERVICE_HOME="<%= @services_final_dir %>"
 
 LOG_FILE="<%= @services_final_dir %>/logs/console.log"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:$JAVA_HOME/bin
 SERVICE_NAME=java-service
 UPDATE="update.sh"
-STARTUP="$JAVA_HOME/bin/java <%= @java_opts %> -jar <%= @artefact %>"
+STARTUP="java8 <%= @java_opts %> -jar <%= @artefact %> server"
 SHUTDOWN_WAIT=30
 
 

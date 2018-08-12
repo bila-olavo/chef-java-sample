@@ -456,9 +456,11 @@
                       "",
                       [
                         "#!/bin/bash -ex\n",
-                        "\n",
-                        "chmod +x /root/install.sh\n",
-                        "/root/install.sh",
+                        "yum install git-core -y\n",
+                        "mkdir /glovo\n",
+                        "git clone https://github.com/bila-olavo/chef-java-sample.git /glovo\n",
+                        "chmod +x /glovo/install.sh\n",
+                        "/glovo/install.sh\n",
                         ""
                       ]
                     ]
