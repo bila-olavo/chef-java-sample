@@ -28,7 +28,7 @@ end
 
 #need refactoring
 bash 'downloadjar' do
-  path "/glovo"
+  cwd "/glovo"
   code <<-EOH
   ./downloader.py https://s3-eu-west-1.amazonaws.com/glovo-public/systems-engineer-interview-1.0-SNAPSHOT.jar
   EOH
