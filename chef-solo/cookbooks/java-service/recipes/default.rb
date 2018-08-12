@@ -36,7 +36,7 @@ bash 'downloadjar' do
 end
 
 template "/etc/init.d/java-service" do
-  owner "java"
+  owner "java-user"
   group "users"
   mode 0755
   source "service.erb"
