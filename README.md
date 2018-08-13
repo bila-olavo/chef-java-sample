@@ -31,13 +31,21 @@ Reqs: AWS Cli
 * Create Stack using Cloud Formation
 
 ```
+aws cloudformation create-stack --region sa-east-1 --profile dev --stack-name GlovoStack --template-body file://create-stack-sample-java.json --parameters ParameterKey=ProjectName,ParameterValue=Glovo-sample-app ParameterKey=InstanceType,ParameterValue=t2.micro ParameterKey=VPCName,ParameterValue=glovo-sample ParameterKey=CIDRVPC,ParameterValue=172.16.0.0/22 ParameterKey=NameSub1,ParameterValue=AZa ParameterKey=NameSub2,ParameterValue=AZc ParameterKey=Sub1Zone,ParameterValue=sa-east-1a ParameterKey=Sub2Zone,ParameterValue=sa-east-1c ParameterKey=CIDRSub1,ParameterValue=172.16.0.0/24 ParameterKey=CIDRSub2,ParameterValue=172.16.1.0/24 ParameterKey=KeyName,ParameterValue=your_key
 
 ```
 
 * Test app
 
 ```
-curl -XGET -H "X-Glovo-Systems-Engineer-Candidate: 1" http://{url_elb}
-Hello Systems Engineer! :) 
+curl -XGET -i -H "X-Glovo-Systems-Engineer-Candidate: 1" Glovo-sample-app-786734889.sa-east-1.elb.amazonaws.com
+HTTP/1.1 200 OK
+Content-Type: text/plain
+Date: Mon, 13 Aug 2018 02:25:10 GMT
+Vary: Accept-Encoding
+Content-Length: 71
+Connection: keep-alive
+
+Hello Systems Engineer! :)
 
 ```
