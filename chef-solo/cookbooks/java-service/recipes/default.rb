@@ -58,5 +58,5 @@ end
 
 
 service "java-service" do
-  action [ :enable, :restart ]
+  action [ :enable, :start ]
 end
