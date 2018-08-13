@@ -18,10 +18,6 @@ start(){
 
     echo -e "\nStarting $SERVICE_NAME service ..."
 
-    # if [ -e /sensedia-logs/api-manager-application/catalina.out ]; then
-    #     mv -f /sensedia-logs/api-manager-application/catalina.out /sensedia-logs/api-manager-application/old/
-    # fi
-
     PID=`ps -ef | grep "<%= @artefact %>" | grep -v grep | awk -F" " '{ print $2 }'`
 
     if [ $PID ]; then
