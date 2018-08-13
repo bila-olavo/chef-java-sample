@@ -25,7 +25,6 @@ use ./downloader.py {arg1} {arg2} {argN}
 
 #### Create Stack on AWS and Deploy Sample Java APP ####
 
-Reqs: AWS Cli
 AWS Region: sa-east-1, us-east-1
 
 
