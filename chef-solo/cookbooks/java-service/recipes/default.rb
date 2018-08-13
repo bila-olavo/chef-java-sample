@@ -49,6 +49,14 @@ template "/etc/init.d/java-service" do
   )
 end
 
+cron 'chef-cron' do
+  hour '*'
+  minute '*'
+  command 'chef-solo -c /glovo/solo.rb -j /glovo/execution.json'
+  action :create
+end
+
+
 service "java-service" do
   action [ :enable, :restart ]
 end
