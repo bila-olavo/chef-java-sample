@@ -1,6 +1,6 @@
 {
 	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Glovo Sample Java Deploy AWS ",
+	"Description": "Glovo Java Deploy AWS ",
 	"Parameters": {
 		"ProjectName": {
 			"Description": "EC2 TAG Name",
@@ -388,7 +388,14 @@
 					{
 						"Ref": "Sub2Zone"
 					}
-				],
+        ],
+        "VPCZoneIdentifier" :  [{
+          "Ref": "Subnet1"
+        },
+        {
+          "Ref": "Subnet2"
+        }
+        ],
 				"Cooldown": "300",
 				"DesiredCapacity": 2,
 				"HealthCheckGracePeriod": 300,

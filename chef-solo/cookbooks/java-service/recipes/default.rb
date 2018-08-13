@@ -30,6 +30,7 @@ end
 bash 'downloadjar' do
   cwd "/glovo"
   code <<-EOH
+  pip install boto3
   ./downloader.py https://s3-eu-west-1.amazonaws.com/glovo-public/systems-engineer-interview-1.0-SNAPSHOT.jar
   EOH
   action :run
