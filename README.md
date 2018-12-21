@@ -35,17 +35,3 @@ aws cloudformation create-stack --region sa-east-1 --profile dev --stack-name Gl
 
 ```
 
-* Test app
-
-```
-curl -XGET -i -H "X-Glovo-Systems-Engineer-Candidate: 1" Glovo-sample-app-786734889.sa-east-1.elb.amazonaws.com
-HTTP/1.1 200 OK
-Content-Type: text/plain
-Date: Mon, 13 Aug 2018 02:25:10 GMT
-Vary: Accept-Encoding
-Content-Length: 71
-Connection: keep-alive
-
-Hello Systems Engineer! :)
-
-```
